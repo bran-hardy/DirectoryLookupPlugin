@@ -1,0 +1,8 @@
+name: DirectoryLookup
+version: '1.0-SNAPSHOT'
+main: io.github.branhardy.directoryLookup.DirectoryLookup
+api-version: '1.21'
+
+commands:
+  shop:
+    description: "Get a list of shops selling the specified item"
