@@ -1,0 +1,11 @@
+# This is an example config file.
+# Rename this to config.yml and add your api keys below
+
+notion:
+  api-url: "https://api.notion.com/v1/databases/"
+  api-key: "your-api-key"
+  version: "2022-06-28"
+  database:
+    shop: "your-database-id"
+    tunnel: "your-database-id"
+    farm: "your-database-id"
