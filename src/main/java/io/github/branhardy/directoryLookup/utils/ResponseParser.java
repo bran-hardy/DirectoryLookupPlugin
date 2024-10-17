@@ -6,8 +6,8 @@ import com.google.gson.JsonParser;
 import io.github.branhardy.directoryLookup.models.Shop;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ResponseParser {
     public static List<Shop> getShops(String response) {
@@ -20,16 +20,16 @@ public class ResponseParser {
             JsonObject page = results.get(i).getAsJsonObject();
             JsonObject properties = page.getAsJsonObject("properties");
 
-            // Converts the long string into a list of items named using minecrafts naming system
-            List<String> inventory = Arrays.stream(extractRichText(properties.getAsJsonObject("Inventory")).split(","))
-                            .map(item -> item.toLowerCase().trim().replace(" ", "_"))
-                            .toList();
+            List<String> inventory = extractMultiSelect(properties.getAsJsonObject("Inventory"))
+                    .stream()
+                    .map(item -> item.toLowerCase().trim().replace(" ", "_"))
+                    .collect(Collectors.toList());
 
             shops.add(new Shop(
                     extractTitle(properties.getAsJsonObject("Shop Name")),
                     inventory,
                     extractRichText(properties.getAsJsonObject("Coords (X, Z)")),
-                    ""/*extractMultiSelect(properties.getAsJsonObject("Spawn"))[0]*/
+                    extractMultiSelect(properties.getAsJsonObject("Spawn")).getFirst()
             ));
         }
 
@@ -44,12 +44,12 @@ public class ResponseParser {
     }
 
     // Helper method to extract the "multi_select" field
-    private static String[] extractMultiSelect(JsonObject itemsProperty) {
+    private static List<String> extractMultiSelect(JsonObject itemsProperty) {
         JsonArray multiSelectArray = itemsProperty.getAsJsonArray("multi_select");
-        String[] items = new String[multiSelectArray.size()];
+        List<String> items = new ArrayList<>();
 
         for (int i = 0; i < multiSelectArray.size(); i++) {
-            items[i] = multiSelectArray.get(i).getAsJsonObject().get("name").getAsString();
+            items.add(multiSelectArray.get(i).getAsJsonObject().get("name").getAsString());
         }
 
         return items;
@@ -59,6 +59,6 @@ public class ResponseParser {
     private static String extractRichText(JsonObject richTextProperty) {
         JsonArray richTextArray = richTextProperty.getAsJsonArray("rich_text");
         return !richTextArray.isEmpty() ? richTextArray.get(0).getAsJsonObject()
-                .getAsJsonObject("text").get("content").getAsString() : "No Coords";
+                .getAsJsonObject("text").get("content").getAsString() : "No Info Found";
     }
 }

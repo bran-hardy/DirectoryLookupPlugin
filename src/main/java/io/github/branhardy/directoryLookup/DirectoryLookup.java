@@ -25,12 +25,17 @@ import java.util.logging.Logger;
 
 public final class DirectoryLookup extends JavaPlugin {
 
+    public static DirectoryLookup instance;
+    public static Logger logger;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
 
+        instance = this;
+        logger = this.getLogger();
+
         saveDefaultConfig();
-        Logger logger = this.getLogger();
 
         String apiUrl = getConfig().getString("notion.api-url");
         String apiKey = getConfig().getString("notion.api-key");
@@ -38,8 +43,8 @@ public final class DirectoryLookup extends JavaPlugin {
 
         String shopDatabase = getConfig().getString("notion.database.shop");
 
-        NotionService notionService = new NotionService(apiUrl, apiKey, apiVersion, logger);
-        ShopService shopService = new ShopService(notionService, shopDatabase, logger);
+        NotionService notionService = new NotionService(apiUrl, apiKey, apiVersion);
+        ShopService shopService = new ShopService(notionService, shopDatabase);
 
         this.getCommand("shop").setExecutor(new ShopCommand(shopService));
         this.getCommand("shop").setTabCompleter(new ShopTabCompleter());

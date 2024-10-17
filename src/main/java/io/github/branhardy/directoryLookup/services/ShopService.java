@@ -1,26 +1,38 @@
 package io.github.branhardy.directoryLookup.services;
 
+import io.github.branhardy.directoryLookup.DirectoryLookup;
 import io.github.branhardy.directoryLookup.models.Shop;
 import io.github.branhardy.directoryLookup.utils.ResponseParser;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.logging.Logger;
 
 public class ShopService {
     private final NotionService notionService;
     private final String databaseId;
-    private final Logger logger;
 
-    public ShopService(NotionService notionService, String databaseId, Logger logger) {
+    public ShopService(NotionService notionService, String databaseId) {
         this.notionService = notionService;
         this.databaseId = databaseId;
-        this.logger = logger;
     }
 
-    public CompletableFuture<List<Shop>> getShops() {
-        return notionService.queryDatabase(databaseId)
-                .thenApply(ResponseParser::getShops)
-                .exceptionally(ex -> { logger.warning(ex.getMessage()); return null; });
+    public List<Shop> getShops(String targetItem) {
+        String response = notionService.queryDatabase(databaseId, modifyTargetItemString(targetItem));
+
+        DirectoryLookup.logger.info(response);
+
+        return ResponseParser.getShops(response);
+    }
+
+    public String modifyTargetItemString(String targetItem) {
+        String[] words = targetItem.split("_");
+        StringBuilder outputString = new StringBuilder();
+
+        for (int i = 0; i < words.length; i ++) {
+            outputString.append(Character.toUpperCase(words[i].charAt(0))).append(words[i].substring(1));
+
+            if (i != words.length - 1) outputString.append(" ");
+        }
+
+        return outputString.toString();
     }
 }
