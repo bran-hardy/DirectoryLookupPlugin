@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ResponseParser {
+public class ResponseUtil {
     public static List<Shop> getShops(String response) {
         List<Shop> shops = new ArrayList<>();
 
@@ -20,16 +20,20 @@ public class ResponseParser {
             JsonObject page = results.get(i).getAsJsonObject();
             JsonObject properties = page.getAsJsonObject("properties");
 
+            String title = extractTitle(properties.getAsJsonObject("Shop Name"));
             List<String> inventory = extractMultiSelect(properties.getAsJsonObject("Inventory"))
                     .stream()
                     .map(item -> item.toLowerCase().trim().replace(" ", "_"))
                     .collect(Collectors.toList());
 
+            String coordinates = extractRichText(properties.getAsJsonObject("Coords (X, Z)"));
+            List<String> spawn = extractMultiSelect(properties.getAsJsonObject("Spawn"));
+
             shops.add(new Shop(
-                    extractTitle(properties.getAsJsonObject("Shop Name")),
+                    title,
                     inventory,
-                    extractRichText(properties.getAsJsonObject("Coords (X, Z)")),
-                    extractMultiSelect(properties.getAsJsonObject("Spawn")).getFirst()
+                    coordinates,
+                    spawn.isEmpty() ? "" : spawn.getFirst()
             ));
         }
 
@@ -40,7 +44,7 @@ public class ResponseParser {
     private static String extractTitle(JsonObject titleProperty) {
         JsonArray titleArray = titleProperty.getAsJsonArray("title");
         return !titleArray.isEmpty() ? titleArray.get(0).getAsJsonObject()
-                .getAsJsonObject("text").get("content").getAsString() : "Unnamed Shop";
+                .getAsJsonObject("text").get("content").getAsString() : "";
     }
 
     // Helper method to extract the "multi_select" field
@@ -59,6 +63,6 @@ public class ResponseParser {
     private static String extractRichText(JsonObject richTextProperty) {
         JsonArray richTextArray = richTextProperty.getAsJsonArray("rich_text");
         return !richTextArray.isEmpty() ? richTextArray.get(0).getAsJsonObject()
-                .getAsJsonObject("text").get("content").getAsString() : "No Info Found";
+                .getAsJsonObject("text").get("content").getAsString() : "";
     }
 }

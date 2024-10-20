@@ -13,8 +13,8 @@ public class Shop {
     public Shop(String name, List<String> inventory, String coordinates, String spawn) {
         this.name = name;
         this.inventory = inventory;
-        this.coordinates = coordinates;
-        this.spawn = spawn;
+        this.coordinates = coordinates.isEmpty() ? "No Coordinates" : coordinates;
+        this.spawn = spawn.isEmpty() ? "No Spawn" : spawn;
     }
 
     public boolean hasItem(String searchedItem) {

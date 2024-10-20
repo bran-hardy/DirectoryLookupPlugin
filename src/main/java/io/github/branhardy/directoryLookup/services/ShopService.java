@@ -1,9 +1,8 @@
 package io.github.branhardy.directoryLookup.services;
 
-import io.github.branhardy.directoryLookup.DirectoryLookup;
 import io.github.branhardy.directoryLookup.models.Shop;
 import io.github.branhardy.directoryLookup.utils.FilterUtil;
-import io.github.branhardy.directoryLookup.utils.ResponseParser;
+import io.github.branhardy.directoryLookup.utils.ResponseUtil;
 
 import java.util.List;
 
@@ -19,6 +18,6 @@ public class ShopService {
     public List<Shop> getShops(String targetItem) {
         String response = notionService.queryDatabase(databaseId, FilterUtil.setupNotionFilter(targetItem));
 
-        return ResponseParser.getShops(response);
+        return ResponseUtil.getShops(response);
     }
 }
