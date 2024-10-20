@@ -26,6 +26,6 @@ public class Shop {
                 ChatColor.WHITE + ": " +
                 ChatColor.GOLD + coordinates +
                 ChatColor.WHITE + ", " +
-                ChatColor.GREEN + spawn + "\n";
+                ChatColor.GREEN + spawn;
     }
 }

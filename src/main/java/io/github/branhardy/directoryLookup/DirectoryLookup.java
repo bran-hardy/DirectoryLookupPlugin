@@ -4,6 +4,7 @@ import io.github.branhardy.directoryLookup.commands.ShopCommand;
 import io.github.branhardy.directoryLookup.commands.ShopTabCompleter;
 import io.github.branhardy.directoryLookup.services.NotionService;
 import io.github.branhardy.directoryLookup.services.ShopService;
+import io.github.branhardy.directoryLookup.utils.FilterUtil;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
@@ -17,8 +18,6 @@ import java.util.logging.Logger;
  *              - If there are no coordinates for the shop, say "No Coords"
  *      - Different Item spelling use cases
  *          - lighting_rod(s), end_rod(s), blaze_rod(s), fishing_rod(s)
- *          - diamond_tools, diamond_armor, horse_armor
- *              - these are not item specific, but the database uses these to clump together multiple tools and other stuff.
  *      - Currently no way to search for animals
  *          - This can be fixed in the tab completer
  */
@@ -48,6 +47,8 @@ public final class DirectoryLookup extends JavaPlugin {
 
         this.getCommand("shop").setExecutor(new ShopCommand(shopService));
         this.getCommand("shop").setTabCompleter(new ShopTabCompleter());
+
+        FilterUtil.initialize();
     }
 
     @Override

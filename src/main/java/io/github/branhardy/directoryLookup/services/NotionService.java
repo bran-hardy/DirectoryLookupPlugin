@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class NotionService {
     private final HttpClient client = HttpClient.newHttpClient();
@@ -20,15 +21,8 @@ public class NotionService {
         this.apiVersion = apiVersion;
     }
 
-    public String queryDatabase(String database, String filter) {
-        String jsonBody = "{\n" +
-                "    \"filter\": {\n" +
-                "        \"property\": \"Inventory\",\n" +
-                "        \"multi_select\": {\n" +
-                "            \"contains\": \"" + filter + "\"\n" +
-                "        }\n" +
-                "    }\n" +
-                "}";
+    public String queryDatabase(String database, List<String> filter) {
+        String jsonBody = createJsonFilter(filter);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl + database + "/query"))
@@ -48,5 +42,32 @@ public class NotionService {
         }
 
         return response != null ? response.body() : "";
+    }
+
+    private String createJsonFilter(List<String> filters) {
+        StringBuilder filter = new StringBuilder();
+
+        filter.append("\"or\":[");
+        for (String item : filters) {
+            filter.append("{\n")
+                    .append("\"property\": \"Inventory\",\n")
+                    .append("\"multi_select\": {\n")
+                    .append("\"contains\": \"")
+                    .append(item)
+                    .append("\"\n")
+                    .append("}\n")
+                    .append("}");
+
+            if (!filters.getLast().equals(item)) {
+                filter.append(",");
+            }
+        }
+        filter.append("]");
+
+        return "{\n" +
+                "    \"filter\": {\n" +
+                filter.toString() +
+                "    }\n" +
+                "}";
     }
 }

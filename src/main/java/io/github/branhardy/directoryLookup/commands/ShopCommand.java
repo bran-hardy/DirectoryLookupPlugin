@@ -35,15 +35,12 @@ public class ShopCommand implements CommandExecutor {
                 .runTaskAsynchronously(DirectoryLookup.instance, () -> {
                     DirectoryLookup.logger.info("Shop task scheduled");
                     List<Shop> shops = shopService.getShops(targetItem);
-                    StringBuilder message = new StringBuilder();
 
                     for (Shop shop : shops) {
-                        if (shop.hasItem(targetItem)) message.append(shop.info());
+                        sender.sendMessage(shop.info());
                     }
 
-                    if (shops.isEmpty()) message.append("No shops are selling the \"").append(targetItem).append("\" item");
-
-                    sender.sendMessage(message.toString());
+                    if (shops.isEmpty()) sender.sendMessage("No shops are selling the \"" + targetItem + "\" item");
                 });
 
         return true;
