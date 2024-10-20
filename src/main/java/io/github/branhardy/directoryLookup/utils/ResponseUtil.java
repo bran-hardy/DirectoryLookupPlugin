@@ -7,7 +7,6 @@ import io.github.branhardy.directoryLookup.models.Shop;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ResponseUtil {
     public static List<Shop> getShops(String response) {
@@ -21,17 +20,11 @@ public class ResponseUtil {
             JsonObject properties = page.getAsJsonObject("properties");
 
             String title = extractTitle(properties.getAsJsonObject("Shop Name"));
-            List<String> inventory = extractMultiSelect(properties.getAsJsonObject("Inventory"))
-                    .stream()
-                    .map(item -> item.toLowerCase().trim().replace(" ", "_"))
-                    .collect(Collectors.toList());
-
             String coordinates = extractRichText(properties.getAsJsonObject("Coords (X, Z)"));
             List<String> spawn = extractMultiSelect(properties.getAsJsonObject("Spawn"));
 
             shops.add(new Shop(
                     title,
-                    inventory,
                     coordinates,
                     spawn.isEmpty() ? "" : spawn.getFirst()
             ));

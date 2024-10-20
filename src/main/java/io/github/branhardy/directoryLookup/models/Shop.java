@@ -6,19 +6,13 @@ import java.util.List;
 
 public class Shop {
     private final String name;
-    private final List<String> inventory;
     private final String coordinates;
     private final String spawn;
 
-    public Shop(String name, List<String> inventory, String coordinates, String spawn) {
+    public Shop(String name, String coordinates, String spawn) {
         this.name = name;
-        this.inventory = inventory;
         this.coordinates = coordinates.isEmpty() ? "No Coordinates" : coordinates;
         this.spawn = spawn.isEmpty() ? "No Spawn" : spawn;
-    }
-
-    public boolean hasItem(String searchedItem) {
-        return inventory.contains(searchedItem);
     }
 
     public String info() {
