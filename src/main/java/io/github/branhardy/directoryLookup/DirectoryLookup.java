@@ -3,24 +3,10 @@ package io.github.branhardy.directoryLookup;
 import io.github.branhardy.directoryLookup.commands.ShopCommand;
 import io.github.branhardy.directoryLookup.commands.ShopTabCompleter;
 import io.github.branhardy.directoryLookup.services.NotionService;
-import io.github.branhardy.directoryLookup.services.ShopService;
 import io.github.branhardy.directoryLookup.utils.FilterUtil;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
-
-/**
- * What to work on:
- *      - Error checking for...
- *          - No Spawn in database
- *              - If there is no spawn selected, don't display anything for that
- *          - no Coordinates in database
- *              - If there are no coordinates for the shop, say "No Coords"
- *      - Different Item spelling use cases
- *          - lighting_rod(s), end_rod(s), blaze_rod(s), fishing_rod(s)
- *      - Currently no way to search for animals
- *          - This can be fixed in the tab completer
- */
 
 public final class DirectoryLookup extends JavaPlugin {
 
@@ -43,9 +29,8 @@ public final class DirectoryLookup extends JavaPlugin {
         String shopDatabase = getConfig().getString("notion.database.shop");
 
         NotionService notionService = new NotionService(apiUrl, apiKey, apiVersion);
-        ShopService shopService = new ShopService(notionService, shopDatabase);
 
-        this.getCommand("shop").setExecutor(new ShopCommand(shopService));
+        this.getCommand("shop").setExecutor(new ShopCommand(notionService, shopDatabase));
         this.getCommand("shop").setTabCompleter(new ShopTabCompleter());
 
         FilterUtil.initialize();

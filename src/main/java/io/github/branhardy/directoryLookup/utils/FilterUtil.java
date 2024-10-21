@@ -13,14 +13,14 @@ public class FilterUtil {
     public static List<String> pottery_sherd_names;
     public static List<String> armor_trim_template_names;
 
-    public static List<String> diamond_tools;
-    public static List<String> diamond_armor;
-
+    public static List<String> diamond_tools, diamond_armor;
     public static List<String> horse_armor;
 
+    public static List<String> flowers, dyes;
+
     public static void initialize() {
-        pottery_sherd_names = getItemsWithName("_SHERD");
-        armor_trim_template_names = getItemsWithName("_TRIM_SMITHING_TEMPLATE");
+        pottery_sherd_names = getItemsWithSuffix("_SHERD");
+        armor_trim_template_names = getItemsWithSuffix("_TRIM_SMITHING_TEMPLATE");
 
         diamond_tools = Arrays.asList(
                 "diamond_pickaxe",
@@ -44,13 +44,44 @@ public class FilterUtil {
                 "diamond_horse_armor"
         );
 
+        flowers = Arrays.asList(
+                "allium",
+                "azure_bluet",
+                "blue_orchid",
+                "cornflower",
+                "dandelion",
+                "lily_of_the_valley",
+                "oxeye_daisy",
+                "poppy",
+                "torch_flower",
+                "orange_tulip",
+                "pink_tulip",
+                "red_tulip",
+                "white_tulip",
+                "wither_rose",
+                "lilac",
+                "peony",
+                "pitcher_plant",
+                "rose_bush",
+                "sunflower"
+        );
+
+        dyes = getItemsContaining("_DYE");
+
         DirectoryLookup.logger.info("Filters have been initialized");
     }
 
-    public static List<String> getItemsWithName(String matchingSuffix) {
+    public static List<String> getItemsWithSuffix(String matchingSuffix) {
         return Arrays.stream(Material.values())
                 .map(Material::name)
                 .filter(name -> name.endsWith(matchingSuffix))
+                .collect(Collectors.toList());
+    }
+
+    public static List<String> getItemsContaining(String matchingName) {
+        return Arrays.stream(Material.values())
+                .map(Material::name)
+                .filter(name -> name.contains(matchingName))
                 .collect(Collectors.toList());
     }
 
@@ -69,6 +100,8 @@ public class FilterUtil {
         if (diamond_tools.contains(initialFilter)) filterList.add("Diamond Tools");
         if (diamond_armor.contains(initialFilter)) filterList.add("Diamond Armor");
         if (horse_armor.contains(initialFilter)) filterList.add("Horse Armor");
+        if (flowers.contains((initialFilter))) filterList.add("Flowers");
+        if (dyes.contains((initialFilter))) filterList.add("Dye");
 
         DirectoryLookup.logger.info("Filter has been created: " + filterList);
 

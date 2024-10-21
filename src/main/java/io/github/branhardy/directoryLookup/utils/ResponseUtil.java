@@ -22,11 +22,13 @@ public class ResponseUtil {
             String title = extractTitle(properties.getAsJsonObject("Shop Name"));
             String coordinates = extractRichText(properties.getAsJsonObject("Coords (X, Z)"));
             List<String> spawn = extractMultiSelect(properties.getAsJsonObject("Spawn"));
+            String owners = extractRichText(properties.getAsJsonObject("Owner IGN"));
 
             shops.add(new Shop(
                     title,
                     coordinates,
-                    spawn.isEmpty() ? "" : spawn.getFirst()
+                    spawn.isEmpty() ? "" : spawn.getFirst(),
+                    owners
             ));
         }
 
