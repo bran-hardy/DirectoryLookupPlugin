@@ -21,7 +21,28 @@ public class NotionService {
         this.apiVersion = apiVersion;
     }
 
-    public String queryDatabase(String database, List<String> filter) {
+    public String queryItems(String database) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl + database + "/query"))
+                .header("Authorization", "Bearer " + apiKey)
+                .header("Notion-Version", apiVersion)
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = null;
+
+        try {
+            DirectoryLookup.logger.info("Requesting SHOP database json from Notion Api");
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            DirectoryLookup.logger.severe("Failed to get Notion database info");
+        }
+
+        return response != null ? response.body() : "";
+    }
+
+    public String queryShops(String database, List<String> filter) {
         String jsonBody = createJsonFilter(filter);
 
         HttpRequest request = HttpRequest.newBuilder()

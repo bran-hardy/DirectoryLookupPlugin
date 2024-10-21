@@ -52,7 +52,7 @@ public class ShopCommand implements CommandExecutor {
         List<String> filter = FilterUtil.setupNotionFilter(targetItem);
 
         // Query Notion database using the generated filter
-        String response = notionService.queryDatabase(databaseId, filter);
+        String response = notionService.queryShops(databaseId, filter);
 
         // Take the response and format it into usable content
         List<Shop> shops = ResponseUtil.getShops(response);
