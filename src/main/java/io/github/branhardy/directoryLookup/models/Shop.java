@@ -2,8 +2,6 @@ package io.github.branhardy.directoryLookup.models;
 
 import org.bukkit.ChatColor;
 
-import java.util.List;
-
 public class Shop {
     private final String name;
     private final String coordinates;

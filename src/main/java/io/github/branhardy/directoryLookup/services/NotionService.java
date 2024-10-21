@@ -49,14 +49,9 @@ public class NotionService {
 
         filter.append("\"or\":[");
         for (String item : filters) {
-            filter.append("{\n")
-                    .append("\"property\": \"Inventory\",\n")
-                    .append("\"multi_select\": {\n")
-                    .append("\"contains\": \"")
+            filter.append("{ \"property\": \"Inventory\", \"multi_select\": { \"contains\": \"")
                     .append(item)
-                    .append("\"\n")
-                    .append("}\n")
-                    .append("}");
+                    .append("\" }}");
 
             if (!filters.getLast().equals(item)) {
                 filter.append(",");
@@ -64,10 +59,6 @@ public class NotionService {
         }
         filter.append("]");
 
-        return "{\n" +
-                "    \"filter\": {\n" +
-                filter.toString() +
-                "    }\n" +
-                "}";
+        return "{ \"filter\": { " + filter + "}}";
     }
 }

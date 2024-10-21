@@ -47,10 +47,10 @@ public class FilterUtil {
         DirectoryLookup.logger.info("Filters have been initialized");
     }
 
-    public static List<String> getItemsWithName(String itemName) {
+    public static List<String> getItemsWithName(String matchingSuffix) {
         return Arrays.stream(Material.values())
                 .map(Material::name)
-                .filter(name -> name.endsWith("_"))
+                .filter(name -> name.endsWith(matchingSuffix))
                 .collect(Collectors.toList());
     }
 
@@ -70,7 +70,7 @@ public class FilterUtil {
         if (diamond_armor.contains(initialFilter)) filterList.add("Diamond Armor");
         if (horse_armor.contains(initialFilter)) filterList.add("Horse Armor");
 
-        DirectoryLookup.logger.info("Filter has been created: " + filterList.toString());
+        DirectoryLookup.logger.info("Filter has been created: " + filterList);
 
         return filterList;
     }
