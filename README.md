@@ -13,5 +13,5 @@ Type `/shop [item]` in-game to get a list of shops selling the specified item al
 
 - **Additions**
 	- Nether Tunnel Lookup
-	- Public Farn Lookup
+	- Public Farm Lookup
 	- Adding/Editing Shop info In-Game
