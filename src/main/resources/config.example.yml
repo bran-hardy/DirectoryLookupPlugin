@@ -9,3 +9,14 @@ notion:
     shop: "your-database-id"
     tunnel: "your-database-id"
     farm: "your-database-id"
+
+filters:
+  diamond_armor: ["diamond_helmet", "diamond_chestplate", "diamond_leggings", "diamond_boots"]
+  diamond_tools: ["diamond_pickaxe", "diamond_axe", "diamond_shovel", "diamond_hoe", "diamond_sword"]
+  horse_armor: ["leather_horse_armor", "iron_horse_armor", "golden_horse_armor", "diamond_horse_armor"]
+  flowers: ["allium", "azure_bluet", "blue_orchid", "cornflower", "dandelion", "lily_of_the_valley", "oxeye_daisy",
+            "poppy", "torch_flower", "orange_tulip", "pink_tulip", "red_tulip", "white_tulip", "wither_rose", "lilac",
+            "peony", "pitcher_plant", "rose_bush", "sunflower"]
+  dye: ["_dye"]
+  sherd: ["_sherd"]
+  armor_trims: ["_trim_smithing_template"]
