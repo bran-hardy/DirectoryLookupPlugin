@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 
 public class FilterUtil {
 
-    private static Map<String, Object> filters;
-
     // This will add additional filters for diamond tools and armor (i.e. if someone searches for diamond_axe,
     // diamond_tools will be added to the filter)
     //
@@ -18,7 +16,10 @@ public class FilterUtil {
     public static List<String> setupNotionFilter(String initialFilter) {
         List<String> filterList = new ArrayList<>();
 
-        filters = DirectoryLookup.instance.getConfig().getConfigurationSection("filters").getValues(false);
+        Map<String, Object> filters = DirectoryLookup.instance
+                .getConfig()
+                .getConfigurationSection("filters")
+                .getValues(false);
 
         filterList.add(reformatFilter(initialFilter));
 
@@ -43,7 +44,7 @@ public class FilterUtil {
         return filterList;
     }
 
-    public static List<String> getItemsWithSuffix(String matchingSuffix) {
+    private static List<String> getItemsWithSuffix(String matchingSuffix) {
         return Arrays.stream(Material.values())
                 .map(material -> material.name().toLowerCase(Locale.ROOT))
                 .filter(name -> name.endsWith(matchingSuffix))
@@ -51,7 +52,7 @@ public class FilterUtil {
     }
 
     // Reformat the input filter so that it can properly query the notion database
-    public static String reformatFilter(String initialFilter) {
+    private static String reformatFilter(String initialFilter) {
         String[] words = initialFilter.split("_");
         StringBuilder outputString = new StringBuilder();
 
