@@ -1,15 +1,11 @@
 package io.github.branhardy.directoryLookup.commands;
 
 import io.github.branhardy.directoryLookup.DirectoryLookup;
-import io.github.branhardy.directoryLookup.models.Shop;
 import io.github.branhardy.directoryLookup.services.NotionService;
-import io.github.branhardy.directoryLookup.utils.FilterUtil;
 import io.github.branhardy.directoryLookup.utils.ResponseUtil;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;

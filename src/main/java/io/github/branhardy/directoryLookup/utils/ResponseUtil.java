@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.github.branhardy.directoryLookup.DirectoryLookup;
 import io.github.branhardy.directoryLookup.models.Shop;
 
 import java.util.ArrayList;
