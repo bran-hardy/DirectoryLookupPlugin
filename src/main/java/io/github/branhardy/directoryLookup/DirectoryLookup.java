@@ -33,7 +33,7 @@ public final class DirectoryLookup extends JavaPlugin {
         NotionService notionService = new NotionService(apiUrl, apiKey, apiVersion);
 
         this.getCommand("shop").setExecutor(new ShopCommand(notionService, shopDatabase));
-        this.getCommand("shop").setTabCompleter(new ShopTabCompleter());
+        this.getCommand("shop").setTabCompleter(new ShopTabCompleter(notionService, shopDatabase));
     }
 
     @Override

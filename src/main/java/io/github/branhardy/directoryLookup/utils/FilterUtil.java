@@ -35,8 +35,6 @@ public class FilterUtil {
             if (items.contains(initialFilter)) {
                 filterList.add(reformatFilter(filterName));
             }
-
-            DirectoryLookup.logger.info(reformatFilter(filterName) + ": " + items);
         }
 
         DirectoryLookup.logger.info("Filter has been created: " + filterList);

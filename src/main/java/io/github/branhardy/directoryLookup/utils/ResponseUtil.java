@@ -1,14 +1,17 @@
 package io.github.branhardy.directoryLookup.utils;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.github.branhardy.directoryLookup.DirectoryLookup;
 import io.github.branhardy.directoryLookup.models.Shop;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ResponseUtil {
+
     public static List<Shop> getShops(String response) {
         List<Shop> shops = new ArrayList<>();
 
@@ -33,6 +36,25 @@ public class ResponseUtil {
         }
 
         return shops;
+    }
+
+    public static List<String> getItems(String response) {
+        List<String> items = new ArrayList<>();
+
+        JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+        JsonObject properties = json.getAsJsonObject("properties");
+
+        JsonObject inventory = properties.getAsJsonObject("Inventory");
+        if (inventory != null && inventory.get("type").getAsString().equals("multi_select")) {
+            JsonArray options = inventory.getAsJsonObject("multi_select").getAsJsonArray("options");
+
+            for (JsonElement option : options) {
+                String name = option.getAsJsonObject().get("name").getAsString();
+                items.add(name.toLowerCase().replace(" ", "_"));
+            }
+        }
+
+        return items;
     }
 
     // Helper method to extract the "title" field

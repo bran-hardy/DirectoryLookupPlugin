@@ -23,7 +23,7 @@ public class NotionService {
 
     public String queryItems(String database) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl + database + "/query"))
+                .uri(URI.create(apiUrl + database))
                 .header("Authorization", "Bearer " + apiKey)
                 .header("Notion-Version", apiVersion)
                 .header("Content-Type", "application/json")
