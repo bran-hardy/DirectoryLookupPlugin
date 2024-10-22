@@ -5,11 +5,10 @@ import io.github.branhardy.directoryLookup.models.Shop;
 import io.github.branhardy.directoryLookup.services.NotionService;
 import io.github.branhardy.directoryLookup.utils.FilterUtil;
 import io.github.branhardy.directoryLookup.utils.ResponseUtil;
-
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -95,6 +94,7 @@ public class ShopCommand implements CommandExecutor {
                     new Text(ownerSuffix + shop.getOwners())
             ));
 
+            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/directorylookupbeacon:" + shop.getCoordinates().replace(",", ":")));
             sender.spigot().sendMessage(message);
         }
     }

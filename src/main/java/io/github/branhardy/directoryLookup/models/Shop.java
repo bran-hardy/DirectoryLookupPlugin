@@ -19,6 +19,8 @@ public class Shop {
         return owners;
     }
 
+    public String getCoordinates() { return coordinates; }
+
     public String info() {
         return ChatColor.DARK_AQUA + name +
                 ChatColor.WHITE + ": " +
