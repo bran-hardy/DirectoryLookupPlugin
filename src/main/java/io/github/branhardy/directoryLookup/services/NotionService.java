@@ -30,16 +30,16 @@ public class NotionService {
                 .GET()
                 .build();
 
-        HttpResponse<String> response = null;
-
         try {
             DirectoryLookup.logger.info("Requesting SHOP database json from Notion Api");
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return response.body();
         } catch (IOException | InterruptedException e) {
             DirectoryLookup.logger.severe("Failed to get Notion database info");
         }
 
-        return response != null ? response.body() : "";
+        return "";
     }
 
     public String queryShops(String database, List<String> filter) {
