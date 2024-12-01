@@ -7,3 +7,11 @@ commands:
   shop:
     description: "Get a list of shops selling the specified item"
     usage: "/shop [item]"
+
+permissions:
+  shop:
+    description: "Allows user to use /shop command"
+    default: true
+  admin:
+    description: "Allows user to reload the plugin and manage settings"
+    default: op

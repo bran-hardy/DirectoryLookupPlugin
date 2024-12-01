@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 public class ShopTabCompleter implements TabCompleter {
 
@@ -29,18 +28,26 @@ public class ShopTabCompleter implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        List<String> suggestions = new ArrayList<>();
+
         if (System.currentTimeMillis() > cacheExpiryTime) {
             refreshCache();
         }
 
-        String input = args[0].toLowerCase(Locale.ROOT);
+        if (args.length == 1) {
+            String input = args[0].toLowerCase(Locale.ROOT);
 
-        return cachedItems.stream()
-                .filter(item -> item.toLowerCase(Locale.ROOT).startsWith(input))
-                .collect(Collectors.toList());
+            for (String item : cachedItems) {
+                if (item.contains(input)) {
+                    suggestions.add(item);
+                }
+            }
+        }
+
+        return suggestions;
     }
 
-    private synchronized void refreshCache() {
+    private void refreshCache() {
         cacheExpiryTime = System.currentTimeMillis() + CACHE_DURATION;
 
         CompletableFuture.runAsync(() -> {

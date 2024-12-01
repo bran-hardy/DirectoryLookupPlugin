@@ -65,6 +65,7 @@ public class NotionService {
         return response != null ? response.body() : "";
     }
 
+    // Create the filter with the searched item
     private String createJsonFilter(List<String> filters) {
         StringBuilder filter = new StringBuilder();
 

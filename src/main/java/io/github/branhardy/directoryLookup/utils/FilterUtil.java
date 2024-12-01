@@ -16,6 +16,7 @@ public class FilterUtil {
     public static List<String> setupNotionFilter(String initialFilter) {
         List<String> filterList = new ArrayList<>();
 
+ /*
         Map<String, Object> filters = DirectoryLookup.instance
                 .getConfig()
                 .getConfigurationSection("filters")
@@ -34,6 +35,20 @@ public class FilterUtil {
 
             if (items.contains(initialFilter)) {
                 filterList.add(reformatFilter(filterName));
+            }
+        }
+
+ */
+        filterList.add(reformatFilter(initialFilter));
+
+        Map<String, List<String>> configFilters = getFilterList();
+
+        for (Map.Entry<String, List<String>> entry : configFilters.entrySet()) {
+            String key = entry.getKey();
+            List<String> values = entry.getValue();
+
+            if (values.contains(initialFilter)) {
+                filterList.add(reformatFilter(key));
             }
         }
 
@@ -72,5 +87,50 @@ public class FilterUtil {
         }
 
         return null;
+    }
+
+    private static Map<String, List<String>> getFilterList() {
+        Map<String, List<String>> filters = new HashMap<>();
+
+        List<?> rawFilters = DirectoryLookup.instance.getConfig().getList("filters");
+        List<List<String>> filterList = new ArrayList<>();
+
+        // Convert YML array to the Map, where the key is the filters name and its values the items to filtered
+        if (rawFilters != null) {
+            for (Object rawFilter : rawFilters) {
+                if (rawFilter instanceof List<?> rawInnerList) {
+                    List<String> filter = new ArrayList<>();
+
+                    String filterName = "";
+                    for (Object item : rawInnerList) {
+
+                        if (item instanceof String) {
+                            if (item == rawInnerList.getFirst()) {
+                                filterName = (String) item;
+                            } else {
+                                filter.add((String) item);
+                            }
+                        }
+                    }
+
+                    filters.put(filterName, filter);
+                }
+            }
+        }
+
+        // Check for "_" in the times to filter and adjust the list accordingly
+        for (Map.Entry<String, List<String>> entry : filters.entrySet()){
+            String key = entry.getKey();
+            List<String> values = entry.getValue();
+
+            // If a filter group can be filtered using the Material values, it will start with _
+            if (values.getFirst().startsWith("_")){
+                values = getItemsWithSuffix(values.getFirst().toLowerCase(Locale.ROOT));
+
+                filters.put(key, values);
+            }
+        }
+
+        return filters;
     }
 }

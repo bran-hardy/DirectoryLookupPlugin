@@ -65,7 +65,7 @@ public class ShopCommand implements CommandExecutor {
         String shopSuffix = shops.size() == 1 ? "shop" : "shops";
 
         if (shops.isEmpty()) {
-            sender.sendMessage(ChatColor.RED + "No shops are selling the \"" + filter.getFirst() + "\" item");
+            sender.sendMessage(ChatColor.RED + "No shops are selling the specified item.");
 
             return;
         }

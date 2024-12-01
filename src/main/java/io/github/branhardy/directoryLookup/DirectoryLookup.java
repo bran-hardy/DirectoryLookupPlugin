@@ -24,8 +24,19 @@ public final class DirectoryLookup extends JavaPlugin {
         String apiUrl = getConfig().getString("notion.api-url");
         String apiKey = getConfig().getString("notion.api-key");
         String apiVersion = getConfig().getString("notion.version");
-
         String shopDatabase = getConfig().getString("notion.database.shop");
+
+        if (apiKey == null || shopDatabase == null) {
+            logger.severe("API Key or Database Key is missing. Please check your configuration.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        if (apiKey.equals("your-api-key") || shopDatabase.equals("your-database-id")) {
+            logger.severe("Improper API Key or Database Key. Please check your configuration.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         NotionService notionService = new NotionService(apiUrl, apiKey, apiVersion);
 
