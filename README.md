@@ -9,6 +9,11 @@ Type `/shop [item]` in-game to get a list of shops selling the specified item al
 
 ---
 
+### Todo
+
+- Store a list of shops in a cache for a set amount of time to avoid repetative query calls when the databaase most likely hasn't changed.
+	- Possibly check the "last_edited_time" to see if anything has changed, and query the database when necessary.
+
 ### Future Development
 
 - **Additions**
